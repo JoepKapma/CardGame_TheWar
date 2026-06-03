@@ -1,5 +1,5 @@
 """
-Build war_game_share_me.exe and verify it works.
+Build CardGame_TheWar.exe and verify it works.
 Run with:  python build_exe.py
 """
 import subprocess
@@ -10,7 +10,7 @@ import time
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DIST = os.path.join(ROOT, 'dist')
-EXE_NAME = 'war_game_share_me.exe'
+EXE_NAME = 'CardGame_TheWar.exe'
 EXE_PATH = os.path.join(DIST, EXE_NAME)
 
 PASS = '\033[92mPASS\033[0m'
@@ -25,7 +25,7 @@ def check(name, condition, detail=''):
     return condition
 
 
-print('\n=== Building war_game_share_me.exe ===\n')
+print('\n=== Building CardGame_TheWar.exe ===\n')
 
 # ── Step 0: Generate tutorial images ─────────────────────────────────────────
 print('Generating tutorial images...')
@@ -55,7 +55,7 @@ cmd = [
     '--add-data', f'static{sep}static',
     '--add-data', f'tutorial_images{sep}tutorial_images',
     '--add-data', f'discovery.py{sep}.',
-    '--name', 'war_game_share_me',
+    '--name', 'CardGame_TheWar',
     '--distpath', DIST,
     '--workpath', os.path.join(ROOT, 'build'),
     '--specpath', ROOT,
@@ -72,7 +72,7 @@ if not check('PyInstaller exited successfully', result.returncode == 0):
 print('\nVerifying build...')
 exists = os.path.exists(EXE_PATH)
 size   = os.path.getsize(EXE_PATH) if exists else 0
-check('war_game_share_me.exe exists', exists)
+check('CardGame_TheWar.exe exists', exists)
 check('File size > 5 MB', size > 5_000_000, f'{size // 1_000_000} MB')
 
 if not exists:

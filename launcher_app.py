@@ -421,20 +421,8 @@ class WarLauncher:
         os._exit(0)  # forcefully kill process + all threads (releases port 5000 immediately)
 
     def share_game(self):
-        if getattr(sys, 'frozen', False):
-            exe_path = os.path.abspath(sys.executable)
-        else:
-            exe_path = os.path.join(
-                os.path.dirname(os.path.abspath(__file__)),
-                'dist', 'war_game_share_me.exe'
-            )
-        if os.path.exists(exe_path):
-            subprocess.Popen(f'explorer /select,"{exe_path}"', shell=True)
-        else:
-            tk.messagebox.showinfo(
-                'Share',
-                'No shareable .exe found yet.\n\nRun  python build_exe.py  first.'
-            )
+        # Open the GitHub releases page so anyone can download the latest .exe
+        webbrowser.open('https://github.com/JoepKapma/CardGame_TheWar/releases/latest')
 
 
 if __name__ == '__main__':

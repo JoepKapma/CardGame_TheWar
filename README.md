@@ -2,6 +2,8 @@
 
 A browser-based card game of attack, shields, and strategy for 2–5 players — playable hot-seat (one device) or over a local network.
 
+[![Download](https://img.shields.io/github/v/release/JoepKapma/CardGame_TheWar?label=Download%20.exe)](https://github.com/JoepKapma/CardGame_TheWar/releases/latest)
+
 ---
 
 ## Demo / Screenshot
