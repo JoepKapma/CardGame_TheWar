@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The War – Card Game</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- SETUP SCREEN (hot-seat) -->
+<div id="setup-screen" class="screen">
+  <div class="setup-box">
+    <h1>⚔️ The War</h1>
+    <p class="subtitle">A card game of attack, shields and strategy</p>
+    <label>Number of players:
+      <select id="player-count">
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+    </label>
+    <div id="name-inputs"></div>
+    <button class="btn btn-primary" onclick="startGame()">Start Game</button>
+  </div>
+</div>
+
+<!-- JOIN SCREEN (LAN — new player entering name) -->
+<div id="join-screen" class="screen hidden">
+  <div class="setup-box">
+    <h1>⚔️ The War</h1>
+    <p class="subtitle" id="join-subtitle">Join the game</p>
+    <label>Your name:
+      <input type="text" id="join-name" placeholder="Enter your name" maxlength="20" />
+    </label>
+    <p id="join-error" style="color:#e63946;margin-top:8px;display:none"></p>
+    <button class="btn btn-primary" onclick="joinLobby()">Join Game</button>
+  </div>
+</div>
+
+<!-- LOBBY SCREEN (LAN — waiting room) -->
+<div id="lobby-screen" class="screen hidden">
+  <div class="setup-box">
+    <h1>⚔️ The War</h1>
+    <p class="subtitle">Waiting room</p>
+    <div id="lobby-url-box" style="display:none">
+      <p style="color:#aaa;font-size:0.85rem;margin-bottom:6px">Share this link with other players:</p>
+      <div id="lobby-url" class="lobby-url-display"></div>
+    </div>
+    <p style="color:#ccc;margin:16px 0 8px">Players joined:</p>
+    <ul id="lobby-player-list" class="lobby-player-list"></ul>
+    <p style="color:#aaa;font-size:0.85rem;margin-top:8px">Need at least 2 players.</p>
+    <button id="start-lan-btn" class="btn btn-primary hidden" onclick="startLanGame()">▶ Start Game</button>
+    <p id="lobby-wait-msg" class="hint">Waiting for the host to start the game…</p>
+  </div>
+</div>
+
+<!-- WAITING SCREEN (LAN — after shield pick, waiting for others) -->
+<div id="waiting-screen" class="screen hidden">
+  <div class="setup-box">
+    <h2 id="waiting-title">Please wait…</h2>
+    <div class="spinner"></div>
+    <p id="waiting-msg" style="color:#ccc;margin-top:16px"></p>
+  </div>
+</div>
+
+<!-- SHIELD PICK SCREEN -->
+<div id="shield-screen" class="screen hidden">
+  <div class="setup-box">
+    <h2 id="shield-player-name"></h2>
+    <p>Pick your <strong>shield card</strong>. The other 3 become your health.</p>
+    <div id="shield-card-choices" class="card-row center"></div>
+    <p class="hint" id="shield-hint">⚠️ Pass the computer to the next player after choosing.</p>
+  </div>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="game-screen" class="screen hidden">
+  <header class="game-header">
+    <span class="game-title">⚔️ The War</span>
+    <div class="pile-info">
+      <div class="pile-box">
+        <div class="card card-back small" id="draw-pile-card"></div>
+        <span id="draw-count">0</span> left
+      </div>
+      <div class="pile-box">
+        <div id="discard-top" class="card small"></div>
+        <span id="discard-count">0</span> discarded
+      </div>
+    </div>
+    <div id="turn-timer" class="hidden turn-timer">⏰ <span id="timer-seconds"></span>s left!</div>
+  </header>
+
+  <div id="players-area"></div>
+
+  <div id="action-panel" class="action-panel">
+    <div class="turn-banner">
+      <span id="turn-label"></span>
+    </div>
+    <!-- Shown to non-active players in LAN mode -->
+    <div id="lan-wait-banner" class="hidden lan-wait-banner">
+      ⏳ Waiting for <strong id="lan-wait-player"></strong> to take their turn…
+    </div>
+    <div id="action-buttons" class="action-buttons">
+      <button class="btn btn-attack" onclick="doAction('attack')">⚔️ Attack</button>
+      <button class="btn btn-shield" onclick="doAction('change_own_shield')">🛡️ Change My Shield</button>
+      <button class="btn btn-shield-opp" onclick="doAction('change_opponent_shield')">🔀 Change Opponent's Shield</button>
+      <button class="btn btn-charge" onclick="doAction('charge')">⚡ Charge</button>
+    </div>
+    <div id="target-row" class="target-row hidden">
+      <label>Target: <select id="target-select"></select></label>
+      <button class="btn btn-confirm" onclick="confirmAction()">Confirm</button>
+      <button class="btn btn-cancel" onclick="cancelAction()">Cancel</button>
+    </div>
+  </div>
+
+  <div id="log-panel" class="log-panel">
+    <div id="log-entries"></div>
+  </div>
+</div>
+
+<!-- WINNER SCREEN -->
+<div id="winner-screen" class="screen hidden">
+  <div class="setup-box">
+    <h1>🏆 Victory!</h1>
+    <p id="winner-name" class="winner-name"></p>
+    <button class="btn btn-primary" onclick="location.reload()">Play Again</button>
+  </div>
+</div>
+
+<script src="/static/game.js"></script>
+</body>
+</html>

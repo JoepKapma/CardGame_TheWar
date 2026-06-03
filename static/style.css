@@ -1,0 +1,320 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap');
+
+:root {
+  --green: #2d7a3a;
+  --green-dark: #1e5429;
+  --green-felt: #306844;
+  --red: #e63946;
+  --black: #1a1a2e;
+  --gold: #f4c542;
+  --card-bg: #fffef5;
+  --card-border: #ccc8a0;
+  --shadow: rgba(0,0,0,0.35);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--green-dark);
+  background-image: radial-gradient(ellipse at center, var(--green) 0%, var(--green-dark) 100%);
+  min-height: 100vh;
+  color: #fff;
+}
+
+.screen { display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+.hidden { display: none !important; }
+
+/* ── Setup / Shield screens ── */
+.setup-box {
+  background: rgba(0,0,0,0.55);
+  border: 3px solid var(--gold);
+  border-radius: 20px;
+  padding: 40px 50px;
+  text-align: center;
+  max-width: 520px;
+  width: 90%;
+  box-shadow: 0 8px 32px var(--shadow);
+}
+
+.setup-box h1 { font-family: 'Fredoka One', cursive; font-size: 3rem; color: var(--gold); margin-bottom: 8px; }
+.setup-box h2 { font-family: 'Fredoka One', cursive; font-size: 2rem; color: var(--gold); margin-bottom: 12px; }
+.subtitle { color: #ccc; margin-bottom: 24px; }
+.hint { color: #f4c54288; font-size: 0.85rem; margin-top: 16px; }
+
+.setup-box label { display: block; margin: 12px 0 6px; font-weight: 600; }
+.setup-box select, .setup-box input[type=text] {
+  padding: 8px 14px; border-radius: 8px; border: 2px solid var(--gold);
+  background: #1a2a1a; color: #fff; font-size: 1rem; width: 100%;
+  margin-top: 4px;
+}
+
+#name-inputs { margin: 16px 0; text-align: left; }
+#name-inputs label { font-size: 0.9rem; }
+
+.winner-name { font-family: 'Fredoka One', cursive; font-size: 2.5rem; color: var(--gold); margin: 20px 0; }
+
+/* ── Buttons ── */
+.btn {
+  display: inline-block; padding: 10px 22px; border-radius: 12px;
+  border: none; cursor: pointer; font-family: 'Fredoka One', cursive;
+  font-size: 1rem; transition: transform .1s, box-shadow .1s;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.4);
+}
+.btn:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,0.4); }
+.btn-primary { background: var(--gold); color: var(--black); margin-top: 20px; font-size: 1.1rem; }
+.btn-attack   { background: #c0392b; color: #fff; }
+.btn-shield   { background: #2980b9; color: #fff; }
+.btn-shield-opp { background: #8e44ad; color: #fff; }
+.btn-charge   { background: #e67e22; color: #fff; }
+.btn-confirm  { background: #27ae60; color: #fff; }
+.btn-cancel   { background: #555; color: #fff; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* ── Game layout ── */
+#game-screen { display: flex; flex-direction: column; align-items: stretch; min-height: 100vh; padding: 0; }
+
+.game-header {
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(0,0,0,0.4); padding: 10px 20px;
+  border-bottom: 2px solid var(--gold);
+}
+.game-title { font-family: 'Fredoka One', cursive; font-size: 1.6rem; color: var(--gold); }
+
+.pile-info { display: flex; gap: 20px; align-items: center; }
+.pile-box { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #ddd; }
+
+/* ── Players area ── */
+#players-area {
+  display: flex; flex-wrap: wrap; gap: 14px;
+  padding: 16px; justify-content: center; flex: 1;
+}
+
+.player-zone {
+  background: rgba(0,0,0,0.35);
+  border: 3px solid #4a7a5a;
+  border-radius: 16px;
+  padding: 14px 16px;
+  min-width: 200px;
+  max-width: 260px;
+  flex: 1;
+  transition: border-color .2s, box-shadow .2s;
+}
+.player-zone.current {
+  border-color: var(--gold);
+  box-shadow: 0 0 18px var(--gold);
+}
+.player-zone.dead {
+  opacity: 0.4;
+  border-color: #555;
+  filter: grayscale(0.8);
+}
+
+.player-name {
+  font-family: 'Fredoka One', cursive; font-size: 1.2rem;
+  text-align: center; margin-bottom: 10px; color: var(--gold);
+}
+.player-name .dead-label { color: #e74c3c; font-size: 0.85rem; }
+.player-name .hp-label { color: #aaffaa; font-size: 0.9rem; margin-left: 6px; }
+
+.section-label { font-size: 0.72rem; text-transform: uppercase; color: #aaa; margin-bottom: 4px; letter-spacing: 1px; }
+
+.card-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.card-row.center { justify-content: center; }
+
+/* ── Cards ── */
+.card {
+  width: 58px; height: 84px;
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: 8px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: 4px 5px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem;
+  box-shadow: 2px 3px 6px var(--shadow);
+  cursor: default;
+  user-select: none;
+  position: relative;
+}
+.card.small { width: 44px; height: 64px; font-size: 0.85rem; }
+.card.clickable { cursor: pointer; border-color: var(--gold); }
+.card.clickable:hover { transform: translateY(-6px); box-shadow: 2px 8px 14px var(--shadow); }
+
+.card .rank-top { color: inherit; font-size: 1em; line-height: 1; }
+.card .suit-mid { font-size: 1.5em; text-align: center; line-height: 1; }
+.card .rank-bot { color: inherit; font-size: 1em; line-height: 1; text-align: right; transform: rotate(180deg); }
+
+.card.red { color: var(--red); }
+.card.black { color: #1a1a2e; }
+
+.card-back {
+  background: linear-gradient(135deg, #1a3a8a 25%, #0d2060 25%, #0d2060 50%, #1a3a8a 50%, #1a3a8a 75%, #0d2060 75%);
+  background-size: 12px 12px;
+  border: 2px solid #3a5aaa;
+}
+
+.charged-zone { margin-top: 6px; }
+
+/* ── Action panel ── */
+.action-panel {
+  background: rgba(0,0,0,0.5);
+  border-top: 2px solid var(--gold);
+  padding: 14px 20px;
+}
+.turn-banner {
+  font-family: 'Fredoka One', cursive; font-size: 1.3rem;
+  color: var(--gold); text-align: center; margin-bottom: 10px;
+}
+.action-buttons { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.target-row { display: flex; gap: 12px; align-items: center; justify-content: center; margin-top: 12px; }
+.target-row select { padding: 6px 10px; border-radius: 8px; border: 2px solid var(--gold); background: #1a2a1a; color: #fff; font-size: 0.95rem; }
+
+/* ── Log ── */
+.log-panel {
+  background: rgba(0,0,0,0.6);
+  border-top: 1px solid #444;
+  padding: 10px 20px;
+  max-height: 130px;
+  overflow-y: auto;
+  font-size: 0.85rem;
+  color: #ccc;
+}
+.log-panel::-webkit-scrollbar { width: 6px; }
+.log-panel::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
+#log-entries div { padding: 2px 0; border-bottom: 1px solid #333; }
+
+/* ── LAN lobby / join screens ── */
+.lobby-url-display {
+  font-family: monospace; font-size: 1.1rem; color: var(--gold);
+  background: rgba(0,0,0,0.4); border: 2px solid var(--gold);
+  border-radius: 10px; padding: 10px 16px; margin-bottom: 8px;
+  word-break: break-all; letter-spacing: 1px;
+}
+.lobby-player-list {
+  list-style: none; text-align: left; padding: 0; margin: 0;
+}
+.lobby-player-list li {
+  padding: 6px 12px; border-bottom: 1px solid #333;
+  font-size: 1rem; color: #eee;
+}
+.lobby-player-list li:first-child { color: var(--gold); font-weight: bold; }
+.lobby-player-list li:first-child::after { content: '  👑'; }
+
+/* ── LAN wait banner (shown when it's not your turn) ── */
+.lan-wait-banner {
+  text-align: center; color: #aaa; padding: 10px 0; font-size: 1rem;
+}
+
+/* ── Turn timer ── */
+.turn-timer {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.3rem;
+  color: var(--red);
+  animation: timer-pulse 0.8s ease-in-out infinite alternate;
+  margin-left: 16px;
+}
+@keyframes timer-pulse {
+  from { opacity: 1;   transform: scale(1); }
+  to   { opacity: 0.5; transform: scale(1.07); }
+}
+
+/* ── Spinner (used on waiting screen) ── */
+.spinner {
+  width: 48px; height: 48px;
+  border: 5px solid rgba(244,197,66,0.3);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+  margin: 16px auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Animations ── */
+
+/* Flying card clone (positioned fixed over the page) */
+.card-flying {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  transition: left 0.45s ease, top 0.45s ease, opacity 0.45s ease, transform 0.45s ease;
+}
+
+/* Shield blocked: card bounces back */
+@keyframes shield-bump {
+  0%   { transform: translateX(0)    scale(1); }
+  35%  { transform: translateX(20px) scale(1.1); }
+  65%  { transform: translateX(-8px) scale(0.95); }
+  100% { transform: translateX(0)    scale(1); }
+}
+.shield-bump { animation: shield-bump 0.5s ease both; }
+
+/* Shield glows when it blocks */
+@keyframes shield-glow {
+  0%   { box-shadow: 0 0 0px #3af; }
+  40%  { box-shadow: 0 0 22px #3af, 0 0 40px #3af; }
+  100% { box-shadow: 0 0 0px #3af; }
+}
+.shield-glow { animation: shield-glow 0.55s ease both; }
+
+/* Explosion/crack pop over health zone */
+@keyframes crack-pop {
+  0%   { transform: translate(-50%, -50%) scale(0.4) rotate(-10deg); opacity: 1; }
+  55%  { transform: translate(-50%, -50%) scale(1.5) rotate(8deg);  opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1.8) rotate(-4deg); opacity: 0; }
+}
+.crack-overlay {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  line-height: 1;
+  z-index: 300;
+  pointer-events: none;
+  animation: crack-pop 0.65s ease forwards;
+}
+
+/* Health zone needs relative positioning for overlay */
+.card-row[data-role="health"] { position: relative; }
+
+/* Card flip: face-down → face-up reveal */
+@keyframes card-flip {
+  0%   { transform: rotateY(90deg) scale(1.1); }
+  100% { transform: rotateY(0deg)  scale(1.1); }
+}
+.card-flip { animation: card-flip 0.3s ease forwards; }
+
+/* Reveal hover — cards shown during the 2-second pause */
+.card-reveal {
+  position: fixed; z-index: 1100; pointer-events: none;
+  transform: scale(1.15);
+  box-shadow: 0 0 20px gold, 0 6px 24px rgba(0,0,0,0.6);
+  border: 2px solid gold;
+}
+
+/* Horse battalion charging across the screen */
+.horse-charge {
+  position: fixed;
+  top: 38%;
+  left: -400px;
+  z-index: 2000;
+  pointer-events: none;
+  white-space: nowrap;
+  font-size: 2.6rem;
+  line-height: 1;
+  text-shadow: 2px 2px 0 #000, -1px -1px 0 #000;
+  animation: horse-run 1.25s cubic-bezier(0.25, 0.1, 0.6, 1) forwards;
+  background: rgba(0,0,0,0.45);
+  border: 3px solid #f4c542;
+  border-radius: 14px;
+  padding: 8px 20px;
+  color: #fff;
+}
+@keyframes horse-run {
+  0%   { left: -420px; transform: scaleY(1)    rotate(-1deg); }
+  20%  {               transform: scaleY(1.07) rotate(1deg);  }
+  40%  {               transform: scaleY(0.96) rotate(-1deg); }
+  60%  {               transform: scaleY(1.07) rotate(1deg);  }
+  80%  {               transform: scaleY(0.96) rotate(-1deg); }
+  100% { left: 110vw;  transform: scaleY(1)    rotate(0deg);  }
+}
