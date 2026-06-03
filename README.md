@@ -6,8 +6,8 @@ A browser-based card game of attack, shields, and strategy for 2–5 players —
 
 ## Demo / Screenshot
 
-> Add a screenshot or GIF of the game here once you have one.
-> (`![Gameplay](docs/screenshot.png)`)
+<img width="1916" height="901" alt="image" src="https://github.com/user-attachments/assets/096985bd-3576-4f81-a08d-431279f9a42a" />
+
 
 ---
 
